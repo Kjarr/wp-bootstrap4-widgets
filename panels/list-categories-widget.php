@@ -20,7 +20,6 @@ class bootstrap3_list_categories_widget extends WP_Widget {
 	function widget($args, $instance) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Categories' ) : $instance['title'], $instance, $this->id_base );
-		$type = $instance['type'];
 		$class = $instance['class'];
 		
 		// retrieves an array of categories or taxonomy terms
@@ -44,7 +43,6 @@ class bootstrap3_list_categories_widget extends WP_Widget {
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['type'] = strip_tags($new_instance['type']);
 		$instance['class'] = strip_tags($new_instance['class']);
 		return $instance;
 	}
