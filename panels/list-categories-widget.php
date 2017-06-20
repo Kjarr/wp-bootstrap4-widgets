@@ -24,12 +24,22 @@ class bootstrap3_list_categories_widget extends WP_Widget {
 
         // retrieves an array of categories or taxonomy terms
         $cats = get_categories();
+
+        // Check to see if we are in a category archive
+        if (is_category()) {
+            $current_category = get_category(get_query_var('cat'), false);
+        }
         ?>
         <div class="panel panel-<?php echo $class; ?>">
             <div class="panel-heading"><?php echo $title ?></div>
             <div class="list-group">
-                <?php foreach ($cats as $cat) { ?>
-                    <a href="<?php echo get_term_link($cat->slug, "category"); ?>" class="list-group-item" title="<?php sprintf(__("View all posts in %s"), $cat->name); ?>">
+                <?php foreach ($cats as $cat) { 
+                    $activeClass = "";
+                    if($cat->term_id == $current_category->term_id) {
+                        $activeClass = "active"; 
+                    }
+                    ?>
+                    <a href="<?php echo get_term_link($cat->slug, "category"); ?>" class="list-group-item <?php echo $activeClass; ?>" title="<?php sprintf(__("View all posts in %s"), $cat->name); ?>">
                         <span class="badge float-right"><?php echo $cat->count; ?></span>
                         <?php echo $cat->name; ?>
                     </a>
