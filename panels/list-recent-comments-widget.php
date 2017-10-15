@@ -1,23 +1,15 @@
 <?php
 
-class bootstrap3_recent_comments_widget extends WP_Widget {
-
-    private $classes = array(
-        'default',
-        'primary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-    );
+class bootstrap4_recent_comments_widget extends bootstrap4_base_widget {
 
     /** constructor -- name this the same as the class above */
-    function bootstrap3_recent_comments_widget() {
+    function bootstrap4_recent_comments_widget() {
         parent::WP_Widget(false, $name = 'Bootstrap Recent Comments', array('description' => 'List recent comments in a bootstrap panel element.'));
     }
 
     /** @see WP_Widget::widget -- do not rename this */
     function widget($args, $instance) {
+        $widgetStyle = new WidgetStyle($instance['class']);
         extract($args);
         $title = apply_filters('widget_title', empty($instance['title']) ? __('Recent Comments') : $instance['title'], $instance, $this->id_base);
         $class = $instance['class'];
@@ -33,9 +25,9 @@ class bootstrap3_recent_comments_widget extends WP_Widget {
         )));
 //        print_r($comments);
         ?>
-        <div class="panel panel-<?php echo $class; ?>">
-            <div class="panel-heading"><?php echo $title ?></div>
-            <ul class="list-group">
+        <div class="card <?php echo $widgetStyle->getCardClass(); ?> mb-3">
+            <div class="card-header <?php echo $widgetStyle->getHeaderTextColor(); ?>"><?php echo $title ?></div>
+            <ul class="list-group list-group-flush">
                 <?php
                 if (is_array($comments) && $comments) {
                     foreach ((array) $comments as $comment) {
@@ -44,7 +36,7 @@ class bootstrap3_recent_comments_widget extends WP_Widget {
                         $output .= sprintf(_x('%1$s on %2$s', 'widgets'), '<span class="comment-author-link">' . get_comment_author_link($comment) . '</span>', '<a href="' . esc_url(get_comment_link($comment)) . '">' . get_the_title($comment->comment_post_ID) . '</a>'
                         );
                         $output .= '</li>';
-                        
+
                         echo $output;
                     }
                 }

@@ -1,2 +1,2 @@
 # wp-bootstrap-widgets
-Widgets for WordPress based on Bootstrap3
+Widgets for WordPress based on Bootstrap 4

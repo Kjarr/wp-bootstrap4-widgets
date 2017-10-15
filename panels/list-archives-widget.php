@@ -1,30 +1,22 @@
 <?php
 
-class bootstrap3_list_archives_widget extends WP_Widget {
-
-    private $classes = array(
-        'default',
-        'primary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-    );
+class bootstrap4_list_archives_widget extends bootstrap4_base_widget {
 
     /** constructor -- name this the same as the class above */
-    function bootstrap3_list_archives_widget() {
+    function bootstrap4_list_archives_widget() {
         parent::WP_Widget(false, $name = 'Bootstrap Archives', array('description' => 'List archives in a bootstrap panel element.'));
     }
 
     /** @see WP_Widget::widget -- do not rename this */
     function widget($args, $instance) {
+        $widgetStyle = new WidgetStyle($instance['class']);
         $c = !empty($instance['count']) ? '1' : '0';
         $d = !empty($instance['dropdown']) ? '1' : '0';
 
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
         $title = apply_filters('widget_title', empty($instance['title']) ? __('Archives') : $instance['title'], $instance, $this->id_base);
         $class = $instance['class'];
-        
+
         if ($d) {
             $dropdown_id = "{$this->id_base}-dropdown-{$this->number}";
             ?>
@@ -70,9 +62,9 @@ class bootstrap3_list_archives_widget extends WP_Widget {
 
             </select>
         <?php } else { ?>
-            <div class="panel panel-<?php echo $class; ?>">
-                <div class="panel-heading"><?php echo $title ?></div>
-                <div class="list-group">
+            <div class="card <?php echo $widgetStyle->getCardClass(); ?> mb-3">
+                <div class="card-header <?php echo $widgetStyle->getHeaderTextColor(); ?>"><?php echo $title ?></div>
+                <div class="list-group list-group-flush">
                     <?php
                     /**
                      * Filters the arguments for the Archives widget.
@@ -111,6 +103,10 @@ class bootstrap3_list_archives_widget extends WP_Widget {
     public function form($instance) {
         $instance = wp_parse_args((array) $instance, array('title' => '', 'count' => 0, 'dropdown' => ''));
         $title = sanitize_text_field($instance['title']);
+        $current_class = $instance['class'];
+        if (empty($current_class)) {
+            $current_class = 'default';
+        }
         ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
         <p>

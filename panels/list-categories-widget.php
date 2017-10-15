@@ -1,23 +1,15 @@
 <?php
 
-class bootstrap3_list_categories_widget extends WP_Widget {
-
-    private $classes = array(
-        'default',
-        'primary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-    );
+class bootstrap4_list_categories_widget extends bootstrap4_base_widget {
 
     /** constructor -- name this the same as the class above */
-    function bootstrap3_list_categories_widget() {
+    function bootstrap4_list_categories_widget() {
         parent::WP_Widget(false, $name = 'Bootstrap Categories', array('description' => 'List categories in a bootstrap elements.'));
     }
 
     /** @see WP_Widget::widget -- do not rename this */
     function widget($args, $instance) {
+        $widgetStyle = new WidgetStyle($instance['class']);
         extract($args);
         $title = apply_filters('widget_title', empty($instance['title']) ? __('Categories') : $instance['title'], $instance, $this->id_base);
         $class = $instance['class'];
@@ -30,17 +22,18 @@ class bootstrap3_list_categories_widget extends WP_Widget {
             $current_category = get_category(get_query_var('cat'), false);
         }
         ?>
-        <div class="panel panel-<?php echo $class; ?>">
-            <div class="panel-heading"><?php echo $title ?></div>
-            <div class="list-group">
-                <?php foreach ($cats as $cat) { 
+        <div class="card <?php echo $widgetStyle->getCardClass(); ?> mb-3">
+            <div class="card-header <?php echo $widgetStyle->getHeaderTextColor(); ?>"><?php echo $title ?></div>
+            <div class="list-group list-group-flush">
+                <?php
+                foreach ($cats as $cat) {
                     $activeClass = "";
-                    if($cat->term_id == $current_category->term_id) {
-                        $activeClass = "active"; 
+                    if ($cat->term_id == $current_category->term_id) {
+                        $activeClass = "active";
                     }
                     ?>
                     <a href="<?php echo get_term_link($cat->slug, "category"); ?>" class="list-group-item <?php echo $activeClass; ?>" title="<?php sprintf(__("View all posts in %s"), $cat->name); ?>">
-                        <span class="badge float-right"><?php echo $cat->count; ?></span>
+                        <span class="badge <?php echo $widgetStyle->getBadgeClass(); ?> float-right"><?php echo $cat->count; ?></span>
                         <?php echo $cat->name; ?>
                     </a>
                 <?php } ?>

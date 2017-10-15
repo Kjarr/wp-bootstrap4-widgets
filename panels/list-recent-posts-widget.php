@@ -1,23 +1,15 @@
 <?php
 
-class bootstrap3_recent_posts_widget extends WP_Widget {
-
-    private $classes = array(
-        'default',
-        'primary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-    );
+class bootstrap4_recent_posts_widget extends bootstrap4_base_widget {
 
     /** constructor -- name this the same as the class above */
-    function bootstrap3_recent_posts_widget() {
+    function bootstrap4_recent_posts_widget() {
         parent::WP_Widget(false, $name = 'Bootstrap Recent Posts', array('description' => 'List recent posts in a bootstrap panel element.'));
     }
 
     /** @see WP_Widget::widget -- do not rename this */
     function widget($args, $instance) {
+        $widgetStyle = new WidgetStyle($instance['class']);
         extract($args);
         $title = apply_filters('widget_title', empty($instance['title']) ? __('Recent Posts') : $instance['title'], $instance, $this->id_base);
         $class = $instance['class'];
@@ -34,14 +26,14 @@ class bootstrap3_recent_posts_widget extends WP_Widget {
                     'ignore_sticky_posts' => true
         )));
         ?>
-        <div class="panel panel-<?php echo $class; ?>">
-            <div class="panel-heading"><?php echo $title ?></div>
-            <div class="list-group">
+        <div class="card <?php echo $widgetStyle->getCardClass(); ?> mb-3">
+            <div class="card-header <?php echo $widgetStyle->getHeaderTextColor(); ?>"><?php echo $title ?></div>
+            <div class="list-group list-group-flush">
                 <?php while ($r->have_posts()) : $r->the_post(); ?>
                     <a href="<?php the_permalink(); ?>" class="list-group-item">
                         <?php get_the_title() ? the_title() : the_ID(); ?>
                         <?php if ($show_date) : ?>
-                            <span class="badge float-right"><?php echo get_the_date(); ?></span>
+                            <span class="badge <?php echo $widgetStyle->getBadgeClass(); ?> float-right"><?php echo get_the_date(); ?></span>
                         <?php endif; ?>
                     </a>
                 <?php endwhile; ?>
