@@ -30,7 +30,7 @@ class bootstrap4_recent_posts_widget extends bootstrap4_base_widget {
             <div class="card-header <?php echo $widgetStyle->getHeaderTextColor(); ?>"><?php echo $title ?></div>
             <div class="list-group list-group-flush">
                 <?php while ($r->have_posts()) : $r->the_post(); ?>
-                    <a href="<?php the_permalink(); ?>" class="list-group-item">
+                    <a href="<?php the_permalink(); ?>" class="list-group-item <?php echo $widgetStyle->getListItemClass(); ?>">
                         <?php get_the_title() ? the_title() : the_ID(); ?>
                         <?php if ($show_date) : ?>
                             <span class="badge <?php echo $widgetStyle->getBadgeClass(); ?> float-right"><?php echo get_the_date(); ?></span>

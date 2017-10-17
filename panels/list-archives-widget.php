@@ -15,7 +15,6 @@ class bootstrap4_list_archives_widget extends bootstrap4_base_widget {
 
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
         $title = apply_filters('widget_title', empty($instance['title']) ? __('Archives') : $instance['title'], $instance, $this->id_base);
-        $class = $instance['class'];
 
         if ($d) {
             $dropdown_id = "{$this->id_base}-dropdown-{$this->number}";
@@ -35,7 +34,7 @@ class bootstrap4_list_archives_widget extends bootstrap4_base_widget {
                 $dropdown_args = apply_filters('widget_archives_dropdown_args', array(
                     'type' => 'monthly',
                     'format' => 'option',
-                    'show_post_count' => $c
+                    'show_post_count' => $c,
                 ));
 
                 switch ($dropdown_args['type']) {
@@ -66,20 +65,19 @@ class bootstrap4_list_archives_widget extends bootstrap4_base_widget {
                 <div class="card-header <?php echo $widgetStyle->getHeaderTextColor(); ?>"><?php echo $title ?></div>
                 <div class="list-group list-group-flush">
                     <?php
-                    /**
-                     * Filters the arguments for the Archives widget.
-                     *
-                     * @since 2.8.0
-                     *
-                     * @see wp_get_archives()
-                     *
-                     * @param array $args An array of Archives option arguments.
-                     */
-                    wp_get_archives(apply_filters('widget_archives_args', array(
-                        'type' => 'monthly',
-                        'format' => 'custom',
-                        'show_post_count' => $c
-                    )));
+                    $archives = wp_get_archives(
+                            array(
+                                    'type' => 'monthly',
+                                    'format' => 'custom',
+                                    'show_post_count' => true,
+                                    'echo' => false,
+                            )
+                    );
+                    $archives = str_replace('<a ', '<a class="list-group-item ' . $widgetStyle->getListItemClass() . '"', $archives);
+                    $archives = str_replace('</a>&nbsp;(', '<span class="badge ' . $widgetStyle->getBadgeClass() . ' float-right">', $archives);
+                    $archives = str_replace(')', '</span></a>', $archives);
+
+                    echo $archives;
                     ?>
                 </div>
             </div>

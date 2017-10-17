@@ -44,29 +44,40 @@ class WidgetStyle {
     public $cardClass = "";
     public $badgeClass = "";
     public $headerTextColor = "text-white";
+    public $listGroupColor = "";
 
     function __construct($class) {
         $this->class = $class;
         $this->cardClass = "bg-" . $this->class;
-        $this->$badgeClass = "badge-" . $this->class;
-        if ($class == "light") {
+        $this->badgeClass = "badge-" . $this->class;
+        if ($class == "light" || $class == "warning") {
             $this->headerTextColor = "";
         }
+        $this->listGroupColor = "list-group-item-" . $class;
     }
 
-    function getCardClass() {
+    /**
+     * This method returns the class to be used for Bootstrap Cards
+     * @return string
+     */
+    public function getCardClass() {
 
         return $this->cardClass;
     }
 
-    function getBadgeClass() {
+    public function getBadgeClass() {
 
-        return $this->$badgeClass;
+        return $this->badgeClass;
     }
 
     public function getHeaderTextColor() {
 
         return $this->headerTextColor;
+    }
+
+    public function getListItemClass() {
+
+        return $this->listGroupColor;
     }
 
 }
@@ -82,15 +93,6 @@ function bootstrap4_widgets_register_widgets() {
     register_widget('bootstrap4_recent_comments_widget');
     register_widget('bootstrap4_list_archives_widget');
 }
-
-function bootstrap4_customize_archives_links($links) {
-    $links = str_replace('<a ', '<a class="list-group-item"', $links);
-    $links = str_replace('</a>&nbsp;(', '<span class="badge badge-dark float-right">', $links);
-    $links = str_replace(')', '</span></a>', $links);
-    return $links;
-}
-
-add_filter('get_archives_link', 'bootstrap4_customize_archives_links');
 
 add_action('widgets_init', 'bootstrap4_widgets_register_widgets');
 

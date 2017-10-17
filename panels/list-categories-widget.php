@@ -29,10 +29,10 @@ class bootstrap4_list_categories_widget extends bootstrap4_base_widget {
                 foreach ($cats as $cat) {
                     $activeClass = "";
                     if ($cat->term_id == $current_category->term_id) {
-                        $activeClass = "active";
+                        $activeClass = " active";
                     }
                     ?>
-                    <a href="<?php echo get_term_link($cat->slug, "category"); ?>" class="list-group-item <?php echo $activeClass; ?>" title="<?php sprintf(__("View all posts in %s"), $cat->name); ?>">
+                <a href="<?php echo get_term_link($cat->slug, "category"); ?>" class="list-group-item <?php echo $widgetStyle->getListItemClass(); echo $activeClass; ?>" title="<?php sprintf(__("View all posts in %s"), $cat->name); ?>">
                         <span class="badge <?php echo $widgetStyle->getBadgeClass(); ?> float-right"><?php echo $cat->count; ?></span>
                         <?php echo $cat->name; ?>
                     </a>
@@ -42,7 +42,12 @@ class bootstrap4_list_categories_widget extends bootstrap4_base_widget {
         <?php
     }
 
-    /** @see WP_Widget::update -- do not rename this */
+	/**
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 *
+	 * @return array
+	 */
     function update($new_instance, $old_instance) {
         $instance = $old_instance;
         $instance['title'] = strip_tags($new_instance['title']);
@@ -50,7 +55,9 @@ class bootstrap4_list_categories_widget extends bootstrap4_base_widget {
         return $instance;
     }
 
-    /** @see WP_Widget::form -- do not rename this */
+	/**
+	 * @param array $instance
+	 */
     function form($instance) {
 
         $instance = wp_parse_args((array) $instance, array('title' => ''));
