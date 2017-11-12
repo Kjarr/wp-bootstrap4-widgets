@@ -65,16 +65,28 @@ class WidgetStyle {
         return $this->cardClass;
     }
 
+	/**
+	 * This method returns the badge class to be used in Bootstrap Cards
+	 * @return string
+	 */
     public function getBadgeClass() {
 
         return $this->badgeClass;
     }
 
+	/**
+	 * This method returns the text to be used in the Bootstrap Cards header
+	 * @return string
+	 */
     public function getHeaderTextColor() {
 
         return $this->headerTextColor;
     }
 
+	/**
+	 * This method returns the list items class used in Bootstrap Cards
+	 * @return string
+	 */
     public function getListItemClass() {
 
         return $this->listGroupColor;
@@ -98,4 +110,3 @@ add_action('widgets_init', 'bootstrap4_widgets_register_widgets');
 
 // Add this to enqueue your scripts on Page Builder too
 add_action('siteorigin_panel_enqueue_admin_scripts', 'bootstrap4_widgets_register_widgets');
-?>
